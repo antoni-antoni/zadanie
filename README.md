@@ -16,6 +16,8 @@ Open the terminal and run: `node app.js`
 
 
 ## 🚀 Run tests:
-Frontend tests only: npx playwright test --grep @front
-API tests only: npx playwright test --grep @api
-All tests: npx playwright test
+**Frontend tests only:** npx playwright test --grep @front
+
+**API tests only:** npx playwright test --grep @api
+
+**All tests:** npx playwright test
