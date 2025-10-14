@@ -1,6 +1,5 @@
 import { Locator, Page } from '@playwright/test';
 
-
 export class StudentItem {
   readonly root: Locator;
   readonly name: Locator;
@@ -12,14 +11,21 @@ export class StudentItem {
     this.year = root.locator('p.font_8.wixui-rich-text__text:has-text("student")');
   }
 
+  //  Extracts the student's name from the page element
+
   async getName() {
     return this.name.innerText();
   }
+
+  //  Extracts the student's year information from the page element
 
   async getYear() {
     return this.year.innerText();
   }
 }
+
+//  Page Object Model for the student council page
+//  Handles retrieval of all student information from the council page
 
 export class StudentsCouncilPage {
   readonly page: Page;
@@ -27,8 +33,12 @@ export class StudentsCouncilPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.students = page.locator('div[role="listitem"]'); // wszystkie elementy studentów
+    this.students = page.locator('div[role="listitem"]');
   }
+
+  //  Retrieves all student items from the page
+  //  Iterates through each student element and creates StudentItem objects
+
   async getAllStudents(): Promise<StudentItem[]> {
     const count = await this.students.count();
     const result: StudentItem[] = [];

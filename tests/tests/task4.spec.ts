@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 
-test.describe('Customers API Tests', () => {
+test.describe('Customers API Tests @api', () => {
     // Do wyłączenia przy unit testach
     test.afterAll(async ({ request }) => {
         if (createdCustomerId) {
@@ -17,6 +17,7 @@ test.describe('Customers API Tests', () => {
     let createdCustomerId: number | null = null;
 
     test('GET /api/customers', async ({ request }) => {
+        // Test retrieving all customers
         const response = await request.get('/api/customers');
         expect(response.status()).toBe(200);
         const customers = await response.json();
@@ -26,6 +27,7 @@ test.describe('Customers API Tests', () => {
     });
 
     test('GET /api/customers/:id', async ({ request }) => {
+        // Test retrieving a specific customer by ID
         const response = await request.get('/api/customers/2');
         expect(response.status()).toBe(200);
         const customer = await response.json();
@@ -33,12 +35,14 @@ test.describe('Customers API Tests', () => {
     });
 
     test('POST /api/customers', async ({ request }) => {
+        // Test creating a new customer
         const newCustomer = { name: randomFullName };
         const response = await request.post('/api/customers', { data: newCustomer });
         expect(response.status()).toBe(200);
         const responseText = await response.text();
         expect(responseText).toBe('Dodano klienta');
 
+        // Verify customer was created by retrieving all customers
         const getResponse = await request.get('/api/customers');
         const customers = await getResponse.json();
         const created = customers.find((c: { name: string }) => c.name === randomFullName);
@@ -48,21 +52,25 @@ test.describe('Customers API Tests', () => {
     });
 
     test('PUT /api/customers/:id', async ({ request }) => {
+        // Test updating an existing customer
         const updatedData = { name: 'Updated Customer - ' + randomFullName };
         const response = await request.put('/api/customers/3', { data: updatedData });
         expect(response.status()).toBe(200);
         const responseText = await response.text();
         expect(responseText).toBe('Zaktualizowano klienta');
+        // Verify the update by retrieving the customer
         const getResponse = await request.get('/api/customers/3');
         const customer = await getResponse.json();
         expect(customer.name).toBe('Updated Customer - ' + randomFullName );
     });
 
     test('DELETE /api/customers/:id', async ({ request }) => {
+        // Test deleting a customer
         const response = await request.delete('/api/customers/1');
         expect(response.status()).toBe(200);
         const responseText = await response.text();
         expect(responseText).toBe('Usunięto klienta');
+        // Verify deletion by checking customer no longer exists
         const getResponse = await request.get('/api/customers');
         const customers = await getResponse.json();
         const deletedCustomer = customers.find((c: { id: number; }) => c.id === 1);

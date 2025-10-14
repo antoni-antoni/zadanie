@@ -28,6 +28,10 @@ export class RegistrationPage {
 
     }
 
+
+    //  Completes user registration with all fields filled
+    //  Fills form fields, uploads photo, accepts conditions, and submits
+
     async register(email: string, password: string, country: string, hobby: string, photoPath: string, additionalInfo: string) {
         await this.page.goto('/registration');
         await this.emailAddressInput.fill(email);

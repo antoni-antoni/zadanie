@@ -14,6 +14,10 @@ export class LoginPage {
         this.loginButton = page.getByRole('button', { name: 'Login' });
     }
 
+
+    //  Performs login with provided credentials
+    //  Navigates to login page, fills form, and submits
+
     async login(username: string, password: string) {
         await this.page.goto('/');
         await this.usernameInput.fill(username);
